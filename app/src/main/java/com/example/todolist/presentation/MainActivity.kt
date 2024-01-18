@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.todolist.data.local.model.Task
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
+import com.example.todolist.presentation.task.TaskListScreen
 import com.example.todolist.presentation.ui.theme.ToDoListTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ToDoListTheme {
-
+                TaskListScreen()
             }
         }
     }
