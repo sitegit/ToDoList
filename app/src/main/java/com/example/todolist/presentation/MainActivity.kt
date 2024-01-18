@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.todolist.data.local.model.Task
+import com.example.todolist.data.local.model.ToDoDb
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
 import com.example.todolist.presentation.task.TaskListScreen
 import com.example.todolist.presentation.ui.theme.ToDoListTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("CoroutineCreationDuringComposition")
@@ -25,21 +22,25 @@ class MainActivity : ComponentActivity() {
 
         val repository = ToDoRepositoryImpl(this)
 
+        val timestamp = 1705536000000L // Ваше значение в миллисекундах
+        val startOfDay = getStartOfDay(timestamp)
+        val endOfDay = getEndOfDay(timestamp)
+
         /*GlobalScope.launch {
             repository.addTask(
-                Task(
-                    id = 2,
-                    dateStart = 147600000,
-                    dateFinish = System.currentTimeMillis(),
-                    name = "ToDoD",
-                    description = "ToDoD"
+                ToDoDb(
+                    id = 6,
+                    dateStart = 1705527660000,
+                    dateFinish = 1705530189999,
+                    name = "Tuest",
+                    description = "Tuest"
                 )
             )
         }*/
 
-        val listToDo = repository.getTasksForDay(147600000)
+        val listToDo = repository.getTasksForDay(startOfDay, endOfDay)
 
-        GlobalScope.launch {
+       GlobalScope.launch {
             listToDo.collect {
                 val newList = it.map { task ->
                     val startDate = getFormattedDate(task.startDate) + "\n" + getFormattedTime(task.startDate)
@@ -70,6 +71,30 @@ class MainActivity : ComponentActivity() {
     private fun getFormattedTime(calendar: Calendar): String {
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         return String.format("%02d:00", hour)
+    }
+
+    private fun getStartOfDay(timestamp: Long): Long {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = timestamp
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return calendar.timeInMillis
+    }
+
+    private fun getEndOfDay(timestamp: Long): Long {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = timestamp
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            add(Calendar.DAY_OF_MONTH, 1)
+            add(Calendar.MILLISECOND, -1)
+        }
+        return calendar.timeInMillis
     }
 }
 

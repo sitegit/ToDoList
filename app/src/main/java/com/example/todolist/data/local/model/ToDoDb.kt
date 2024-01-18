@@ -1,39 +1,36 @@
 package com.example.todolist.data.local.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.util.Calendar
 import java.util.Date
 
+@Parcelize
 @Entity(tableName = "to_do_list")
-data class Task(
+data class ToDoDb(
     @PrimaryKey val id: Int,
-    @ColumnInfo(name = "start_time") var dateStart: Long,
-    @ColumnInfo(name = "finish_time") var dateFinish: Long,
+    @ColumnInfo(name = "start_time") val dateStart: Long,
+    @ColumnInfo(name = "finish_time") val dateFinish: Long,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String
-) {
+) : Parcelable {
 
     val startDate: Calendar
         get() {
             return Calendar.getInstance().apply {
-                time = Date(this@Task.dateStart)
+                time = Date(this@ToDoDb.dateStart)
             }
         }
 
     val finishDate: Calendar
         get() {
             return Calendar.getInstance().apply {
-                time = Date(this@Task.dateFinish)
+                time = Date(this@ToDoDb.dateFinish)
             }
         }
-
-    fun setCurrentTime() {
-        val currentTime = System.currentTimeMillis()
-        this.dateStart = currentTime
-        this.dateFinish = currentTime
-    }
 
     /*private fun getFormattedDate(timeInMillis: Long): String {
         val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.todolist.data.local.model.Task
+import com.example.todolist.data.local.model.ToDoDb
 
-@Database(entities = [Task::class], version = 1, exportSchema = false)
+@Database(entities = [ToDoDb::class], version = 1, exportSchema = false)
 abstract class ToDoDatabase : RoomDatabase() {
 
     abstract fun toDoDao(): ToDoDao

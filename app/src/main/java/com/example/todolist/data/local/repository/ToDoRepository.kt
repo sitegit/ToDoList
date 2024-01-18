@@ -1,11 +1,11 @@
 package com.example.todolist.data.local.repository
 
-import com.example.todolist.data.local.model.Task
+import com.example.todolist.data.local.model.ToDoDb
 import kotlinx.coroutines.flow.Flow
 
 interface ToDoRepository {
 
-    fun getTasksForDay(dayStart: Long): Flow<List<Task>>
+    fun getTasksForDay(dayStart: Long, dayEnd: Long): Flow<List<ToDoDb>>
 
-    suspend fun addTask(task: Task)
+    suspend fun addTask(task: ToDoDb)
 }

@@ -1,12 +1,16 @@
 package com.example.todolist.presentation.task
 
 import android.util.Log
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,6 +35,10 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
@@ -51,7 +59,7 @@ fun TaskListScreen() {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Log.i("MyTag", selectedDate.longValue.toString())
+                    Log.i("MyTag", System.currentTimeMillis().toString())
                     AppBarContent(selectedDate, showDialog)
                 }
             )
@@ -61,6 +69,7 @@ fun TaskListScreen() {
             DialogDatePicker(selectedDate, showDialog)
         }
         ScrollContent(innerPadding)
+
     }
 }
 
@@ -127,19 +136,56 @@ private fun AppBarContent(selectedDate: MutableState<Long>, showDialog: MutableS
 @Composable
 private fun ScrollContent(innerPadding: PaddingValues) {
     val range = 0..23
+    val lineHeight = 29.dp // Высота каждого элемента в LazyColumn
+    val textHeight = 27.dp // Примерная высота текста
 
-    LazyColumn(
+    Box(
         modifier = Modifier
-            .fillMaxSize(),
-        contentPadding = innerPadding,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(top = 10.dp, bottom = 10.dp, start = 10.dp)
+            .fillMaxSize()
     ) {
-        items(range.count()) { index ->
-            val hour = String.format("%02d:00", index)
-            Text(text = hour)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = innerPadding
+        ) {
+            items(range.count()) { index ->
+                val hour = String.format("%02d:00", index)
+                Text(
+                    text = hour,
+                    modifier = Modifier.padding(1.dp).background(Color.Gray)
+                )
+            }
+        }
+
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val itemHeightPx = lineHeight.toPx()
+            val textHeightPx = textHeight.toPx()
+            // Рассчитываем центр текста относительно его контейнера
+            val centerOfText = (itemHeightPx - textHeightPx) / 2 + textHeightPx / 2
+
+            for (i in range) {
+                // Смещаем линию так, чтобы она была по центру текста
+                val y = i * itemHeightPx + centerOfText + innerPadding.calculateTopPadding().toPx()
+                drawLine(
+                    color = Color.Gray.copy(alpha = 0.5f),
+                    start = Offset(120f, y),
+                    end = Offset(size.width, y),
+                    strokeWidth = 1.dp.toPx(),
+                    pathEffect = PathEffect.dashPathEffect(
+                        intervals = floatArrayOf(
+                            4.dp.toPx(),
+                            4.dp.toPx()
+                        ),
+                        phase = 0f
+                    )
+                )
+            }
         }
     }
 }
+
+
+
 
 private fun getFormattedDate(timeMillis: Long): String {
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
