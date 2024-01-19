@@ -11,7 +11,8 @@ import java.util.Date
 @Parcelize
 @Entity(tableName = "to_do_list")
 data class ToDoDb(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     @ColumnInfo(name = "start_time") val dateStart: Long,
     @ColumnInfo(name = "finish_time") val dateFinish: Long,
     @ColumnInfo(name = "name") val name: String,
