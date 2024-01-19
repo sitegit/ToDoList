@@ -10,8 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.ToDoApplication
 import com.example.todolist.ViewModelFactory
-import com.example.todolist.data.local.repository.ToDoRepositoryImpl
-import com.example.todolist.presentation.to_do_list.ToDoListNew
 import com.example.todolist.presentation.to_do_list.ToDoListScreen
 import com.example.todolist.presentation.to_do_list.ToDoListScreenState
 import com.example.todolist.presentation.to_do_list.ToDoListViewModel
@@ -40,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
                 when (val currentState = screenState.value) {
                     is ToDoListScreenState.Content -> {
-                        ToDoListNew(toDoList = currentState.toDoList)
+                        ToDoListScreen(toDoList = currentState.toDoList)
                     }
                     is ToDoListScreenState.Error -> {}
                     ToDoListScreenState.Initial -> {}
