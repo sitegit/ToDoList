@@ -38,13 +38,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todolist.data.local.model.ToDoDb
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoListScreen() {
+fun ToDoListScreen(toDoList: List<ToDoDb>) {
     val showDialog = remember { mutableStateOf(false) }
     val selectedDate = remember { mutableLongStateOf(System.currentTimeMillis()) }
 
@@ -64,10 +65,44 @@ fun ToDoListScreen() {
         if (showDialog.value) {
             DialogDatePicker(selectedDate, showDialog)
         }
-        ScrollContent(innerPadding)
+    }
 
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .padding(top = 20.dp)
+
+    ) {
+        val range = 0..48
+        for (i in range) {
+            val offsetY = i * 100f
+            drawLine(
+                color = Color.White,
+                start = Offset(100f, offsetY),
+                end = Offset(size.width, offsetY),
+                strokeWidth = 1f
+            )
+        }
+
+        drawLine(
+            color = Color.White,
+            start = Offset(110f, 0f),
+            end = Offset(110f, size.height),
+            strokeWidth = 1f
+        )
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,7 +183,9 @@ private fun ScrollContent(innerPadding: PaddingValues) {
                 val hour = String.format("%02d:00", index)
                 Text(
                     text = hour,
-                    modifier = Modifier.padding(1.dp).background(Color.Gray)
+                    modifier = Modifier
+                        .padding(1.dp)
+                        .background(Color.Gray)
                 )
             }
         }

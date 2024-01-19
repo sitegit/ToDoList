@@ -11,7 +11,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.ToDoApplication
 import com.example.todolist.ViewModelFactory
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
+import com.example.todolist.presentation.to_do_list.ToDoListNew
 import com.example.todolist.presentation.to_do_list.ToDoListScreen
+import com.example.todolist.presentation.to_do_list.ToDoListScreenState
 import com.example.todolist.presentation.to_do_list.ToDoListViewModel
 import com.example.todolist.presentation.ui.theme.ToDoListTheme
 import java.util.Calendar
@@ -35,7 +37,15 @@ class MainActivity : ComponentActivity() {
 
                 val viewModel: ToDoListViewModel = viewModel(factory = viewModelFactory)
                 val screenState = viewModel.state.collectAsState()
-                ToDoListScreen()
+
+                when (val currentState = screenState.value) {
+                    is ToDoListScreenState.Content -> {
+                        ToDoListNew(toDoList = currentState.toDoList)
+                    }
+                    is ToDoListScreenState.Error -> {}
+                    ToDoListScreenState.Initial -> {}
+                    ToDoListScreenState.Loading -> {}
+                }
             }
         }
     }
