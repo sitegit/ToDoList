@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,10 +23,12 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -37,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -44,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.data.local.model.ToDoDb
 import com.example.todolist.getApplicationComponent
+import com.example.todolist.presentation.DialogDatePicker
 import com.example.todolist.util.formatTimeRange
 import com.example.todolist.util.getFormattedDate
 import com.example.todolist.util.toHour
@@ -51,7 +56,8 @@ import java.util.Calendar
 
 @Composable
 fun ToDoListScreen(
-    onClickedCard: (ToDoDb) -> Unit
+    onClickedCard: (ToDoDb) -> Unit,
+    onClickAddToDoButton: (Long) -> Unit
 ) {
 
     val component = getApplicationComponent()
@@ -63,7 +69,8 @@ fun ToDoListScreen(
             ToDoListContent(
                 toDoList = currentState.toDoList,
                 onClickLoadDate = { viewModel.loadToDoList(it) },
-                onClickedCard = onClickedCard
+                onClickedCard = onClickedCard,
+                onClickAddToDoButton = onClickAddToDoButton
             )
         }
         is ToDoListScreenState.Error -> {}
@@ -76,10 +83,11 @@ fun ToDoListScreen(
 fun ToDoListContent(
     toDoList: List<ToDoDb>,
     onClickLoadDate: (timeMillis: Long) -> Unit,
-    onClickedCard: (ToDoDb) -> Unit
+    onClickedCard: (ToDoDb) -> Unit,
+    onClickAddToDoButton: (timeMillis: Long) -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    val selectedDate = remember { mutableLongStateOf(System.currentTimeMillis()) }
+    val selectedDate = rememberSaveable { mutableLongStateOf(System.currentTimeMillis()) }
 
     Scaffold(
         topBar = {
@@ -93,6 +101,9 @@ fun ToDoListContent(
                 }
             )
         },
+        floatingActionButton = {
+            FloatButton { onClickAddToDoButton(selectedDate.longValue) }
+        }
     ) { paddingValues ->
         if (showDialog.value) {
             DialogDatePicker(
@@ -163,7 +174,7 @@ fun ToDoItem(
     Card(
         modifier = Modifier
             .fillMaxWidth(0.8f)
-            .padding(end = 10.dp)
+            .padding(top = 1.dp, bottom = 1.dp, end = 10.dp)
             .clickable {
                 onClickedCard()
             },
@@ -175,7 +186,7 @@ fun ToDoItem(
             modifier = Modifier
                 .fillMaxSize()
                 .defaultMinSize(minHeight = 40.dp)
-                .padding(5.dp)
+                .padding(vertical = 5.dp, horizontal = 10.dp)
         ) {
             Text(
                 text = name,
@@ -236,51 +247,15 @@ private fun AppBarContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DialogDatePicker(
-    selectedDate: MutableState<Long>,
-    showDialog: MutableState<Boolean>,
-    modifier: Modifier,
-    onClickLoadDate: (Long) -> Unit
+fun FloatButton(
+    onClickAddToDoButton: () -> Unit
 ) {
-    val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = selectedDate.value,
-    )
-
-    DatePickerDialog(
-        modifier = modifier,
-        onDismissRequest = { showDialog.value = false },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    selectedDate.value = datePickerState.selectedDateMillis ?: selectedDate.value
-                    showDialog.value = false
-                    onClickLoadDate(selectedDate.value)
-                }
-            ) {
-                Text("Выбрать")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    showDialog.value = false
-                }
-            ) {
-                Text("Oтмена")
-            }
-        }
+    SmallFloatingActionButton(
+        onClick = { onClickAddToDoButton() },
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
-        DatePicker(
-            state = datePickerState,
-            title = {
-                Text(
-                    modifier = Modifier.padding(top = 20.dp, start = 20.dp),
-                    text = "Выберите дату",
-                    fontSize = 20.sp
-                )
-            }
-        )
+        Icon(Icons.Filled.Add, null)
     }
 }

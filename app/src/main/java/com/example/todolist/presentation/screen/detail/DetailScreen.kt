@@ -61,7 +61,7 @@ fun DetailScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(vertical = 30.dp, horizontal = 15.dp)
+            .padding(vertical = 10.dp, horizontal = 10.dp)
     ) {
         IconButton(
             onClick = { onBackPressedListener() }

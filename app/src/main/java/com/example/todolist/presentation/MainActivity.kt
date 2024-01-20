@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.example.todolist.navigation.AppNavGraph
 import com.example.todolist.navigation.Screen
+import com.example.todolist.presentation.screen.add.AddToDoScreen
 import com.example.todolist.presentation.screen.detail.DetailScreen
 import com.example.todolist.presentation.screen.to_do_list.ToDoListScreen
 import com.example.todolist.presentation.ui.theme.ToDoListTheme
@@ -23,16 +24,21 @@ class MainActivity : ComponentActivity() {
                 AppNavGraph(
                     navHostController = navHostController,
                     toDoListScreenContent = {
-                        ToDoListScreen {
-                            navHostController.navigate(Screen.Detail.getRouteWithArgs(it))
-                        }
+                        ToDoListScreen(
+                            onClickedCard = {
+                                navHostController.navigate(Screen.Detail.getRouteWithArgs(it))
+                            },
+                            onClickAddToDoButton = {
+                                navHostController.navigate(Screen.AddToDo.getRouteWithArgs(it))
+                            }
+                        )
                     },
                     detailScreenContent = {
-                        DetailScreen(it) {
-                            navHostController.popBackStack()
-                        }
+                        DetailScreen(it) { navHostController.popBackStack() }
                     },
-                    addScreenContent = {  }
+                    addScreenContent = {
+                        AddToDoScreen(it) { navHostController.popBackStack() }
+                    }
                 )
             }
         }

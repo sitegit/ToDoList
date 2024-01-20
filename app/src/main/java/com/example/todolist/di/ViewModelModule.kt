@@ -1,6 +1,7 @@
 package com.example.todolist.di
 
 import androidx.lifecycle.ViewModel
+import com.example.todolist.presentation.screen.add.AddToDoViewModel
 import com.example.todolist.presentation.screen.detail.DetailViewModel
 import com.example.todolist.presentation.screen.to_do_list.ToDoListViewModel
 import dagger.Binds
@@ -19,4 +20,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(DetailViewModel::class)
     fun bindDetailViewModel(viewModel: DetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddToDoViewModel::class)
+    fun bindAddViewModel(viewModel: AddToDoViewModel): ViewModel
 }
