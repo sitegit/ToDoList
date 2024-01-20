@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todolist.data.local.model.ToDoDb
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,11 +27,13 @@ class ToDoListViewModel @Inject constructor(
     }
 
     init {
-        loadToDoList(1705536000000)
+        val currentDate = System.currentTimeMillis()
+
+        loadToDoList(currentDate)
     }
 
-    private fun loadToDoList(date: Long) {
-        _state.value = ToDoListScreenState.Loading
+    fun loadToDoList(date: Long) {
+        //_state.value = ToDoListScreenState.Loading
         val dayStart = getStartOfDay(date)
         val dayFinish = getEndOfDay(date)
         viewModelScope.launch(exceptionHandler) {

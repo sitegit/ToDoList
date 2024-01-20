@@ -6,7 +6,7 @@ sealed class ToDoListScreenState {
 
     data object Initial : ToDoListScreenState()
 
-    data object Loading : ToDoListScreenState()
+    //data object Loading : ToDoListScreenState()
 
     data class Error(val message: String? = null) : ToDoListScreenState()
 

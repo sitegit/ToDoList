@@ -1,7 +1,6 @@
 package com.example.todolist.presentation.to_do_list
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.Canvas
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,20 +38,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todolist.data.local.model.ToDoDb
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoListScreen(toDoList: List<ToDoDb>) {
+fun ToDoListScreen(
+    toDoList: List<ToDoDb>,
+    onClickLoadDate: (timeMillis: Long) -> Unit
+) {
     val showDialog = remember { mutableStateOf(false) }
     val selectedDate = remember { mutableLongStateOf(System.currentTimeMillis()) }
 
@@ -69,38 +69,75 @@ fun ToDoListScreen(toDoList: List<ToDoDb>) {
         },
     ) { paddingValues ->
         if (showDialog.value) {
-            DialogDatePicker(selectedDate, showDialog, Modifier.padding(paddingValues))
+            DialogDatePicker(
+                selectedDate, showDialog, Modifier.padding(paddingValues), onClickLoadDate
+            )
         }
-        ScrollContent(modifier = Modifier.padding(paddingValues))
+        ScrollContent(modifier = Modifier.padding(paddingValues), toDoList = toDoList)
     }
 }
 
 @Composable
-private fun ScrollContent(modifier: Modifier) {
+private fun ScrollContent(
+    modifier: Modifier,
+    toDoList: List<ToDoDb>
+) {
     val range = 0..23
+    Log.i("MyTag", "ScrollContent " + toDoList.toString())
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .padding(start = 10.dp)
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.End
     ) {
-        items(range.count() ) { index ->
+        items(range.count()) { index ->
+            val tasksAtThisHour = toDoList
+                .filter { it.startDate.get(Calendar.HOUR_OF_DAY) == index }
+
             TimeLine(index)
-            ToDoItem()
+            TimeScheduledTasks(tasksAtThisHour)
             if (index == range.last) TimeLine(0)
         }
     }
-    VerticalLine(modifier = modifier)
 }
 
-@Preview
+@Composable
+fun TimeScheduledTasks(
+    tasksAtThisHour: List<ToDoDb>
+) {
+    if (tasksAtThisHour.isNotEmpty()) {
+        tasksAtThisHour.forEach { toDoItem ->
+            val startDate = toDoItem.startDate.get(Calendar.HOUR_OF_DAY)
+            val finishDate = toDoItem.finishDate.get(Calendar.HOUR_OF_DAY)
+            ToDoItem(
+                name = toDoItem.name,
+                startTime = startDate,
+                finishTime = finishDate
+            ) {}
+        }
+    } else {
+        Spacer(modifier = Modifier.height(15.dp))
+    }
+}
+
 @Composable 
-fun ToDoItem() {
+fun ToDoItem(
+    name: String,
+    startTime: Int,
+    finishTime: Int,
+    onClickedCard: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(0.8f)
-            .padding(end = 10.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            .padding(end = 10.dp)
+            .clickable {
+                onClickedCard()
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
     ) {
         Box(
             modifier = Modifier
@@ -109,12 +146,12 @@ fun ToDoItem() {
                 .padding(5.dp)
         ) {
             Text(
-                text = "Заголовок",
+                text = name,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.align(Alignment.TopStart)
             )
             Text(
-                text = "00:00 - 01:00",
+                text = formatTimeRange(startTime, finishTime),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontSize = 12.sp,
                 modifier = Modifier.align(Alignment.BottomEnd)
@@ -142,22 +179,10 @@ fun TimeLine(
 }
 
 @Composable
-fun VerticalLine(modifier: Modifier) {
-    Canvas(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val offsetX = size.width - (size.width - 60.dp.toPx())
-        drawLine(
-            color = Color.Gray,
-            start = Offset(offsetX, 0f),
-            end = Offset(offsetX, size.height),
-            strokeWidth = 1f
-        )
-    }
-}
-
-@Composable
-private fun AppBarContent(selectedDate: MutableState<Long>, showDialog: MutableState<Boolean>) {
+private fun AppBarContent(
+    selectedDate: MutableState<Long>,
+    showDialog: MutableState<Boolean>
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -181,7 +206,8 @@ private fun AppBarContent(selectedDate: MutableState<Long>, showDialog: MutableS
 private fun DialogDatePicker(
     selectedDate: MutableState<Long>,
     showDialog: MutableState<Boolean>,
-    modifier: Modifier
+    modifier: Modifier,
+    onClickLoadDate: (Long) -> Unit
 ) {
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = selectedDate.value,
@@ -195,6 +221,7 @@ private fun DialogDatePicker(
                 onClick = {
                     selectedDate.value = datePickerState.selectedDateMillis ?: selectedDate.value
                     showDialog.value = false
+                    onClickLoadDate(selectedDate.value)
                 }
             ) {
                 Text("Выбрать")
@@ -226,4 +253,8 @@ private fun DialogDatePicker(
 private fun getFormattedDate(timeMillis: Long): String {
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     return formatter.format(Date(timeMillis))
+}
+
+fun formatTimeRange(startTime: Int, finishTime: Int): String {
+    return String.format("%02d:00 - %02d:00", startTime, finishTime)
 }

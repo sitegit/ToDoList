@@ -1,12 +1,10 @@
-@file:Suppress("NAME_SHADOWING")
-
 package com.example.todolist.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.ToDoApplication
 import com.example.todolist.ViewModelFactory
@@ -38,11 +36,17 @@ class MainActivity : ComponentActivity() {
 
                 when (val currentState = screenState.value) {
                     is ToDoListScreenState.Content -> {
-                        ToDoListScreen(toDoList = currentState.toDoList)
+                        ToDoListScreen(toDoList = currentState.toDoList) {
+                            viewModel.loadToDoList(it)
+                        }
                     }
-                    is ToDoListScreenState.Error -> {}
-                    ToDoListScreenState.Initial -> {}
-                    ToDoListScreenState.Loading -> {}
+                    is ToDoListScreenState.Error -> {
+                        //Log.i("MyTag", "ToDoListScreenState.Error")
+                    }
+                    ToDoListScreenState.Initial -> {
+                        //Log.i("MyTag", "ToDoListScreenState.Initial")
+                    }
+
                 }
             }
         }
