@@ -8,4 +8,6 @@ interface ToDoRepository {
     fun getTasksForDay(dayStart: Long, dayEnd: Long): Flow<List<ToDoDb>>
 
     suspend fun addTask(task: ToDoDb)
+
+    suspend fun getTask(id: Int): ToDoDb
 }

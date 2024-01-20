@@ -50,7 +50,8 @@ import java.util.Locale
 @Composable
 fun ToDoListScreen(
     toDoList: List<ToDoDb>,
-    onClickLoadDate: (timeMillis: Long) -> Unit
+    onClickLoadDate: (timeMillis: Long) -> Unit,
+    onClickedCard: (Int) -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
     val selectedDate = remember { mutableLongStateOf(System.currentTimeMillis()) }
@@ -73,17 +74,20 @@ fun ToDoListScreen(
                 selectedDate, showDialog, Modifier.padding(paddingValues), onClickLoadDate
             )
         }
-        ScrollContent(modifier = Modifier.padding(paddingValues), toDoList = toDoList)
+        ScrollContent(modifier = Modifier.padding(paddingValues), toDoList = toDoList) {
+            onClickedCard(it)
+        }
     }
 }
 
 @Composable
 private fun ScrollContent(
     modifier: Modifier,
-    toDoList: List<ToDoDb>
+    toDoList: List<ToDoDb>,
+    onClickedCard: (Int) -> Unit
 ) {
     val range = 0..23
-    Log.i("MyTag", "ScrollContent " + toDoList.toString())
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -96,7 +100,7 @@ private fun ScrollContent(
                 .filter { it.startDate.get(Calendar.HOUR_OF_DAY) == index }
 
             TimeLine(index)
-            TimeScheduledTasks(tasksAtThisHour)
+            TimeScheduledTasks(tasksAtThisHour) { onClickedCard(it) }
             if (index == range.last) TimeLine(0)
         }
     }
@@ -104,7 +108,8 @@ private fun ScrollContent(
 
 @Composable
 fun TimeScheduledTasks(
-    tasksAtThisHour: List<ToDoDb>
+    tasksAtThisHour: List<ToDoDb>,
+    onClickedCard: (Int) -> Unit
 ) {
     if (tasksAtThisHour.isNotEmpty()) {
         tasksAtThisHour.forEach { toDoItem ->
@@ -114,7 +119,9 @@ fun TimeScheduledTasks(
                 name = toDoItem.name,
                 startTime = startDate,
                 finishTime = finishDate
-            ) {}
+            ) {
+                onClickedCard(toDoItem.id)
+            }
         }
     } else {
         Spacer(modifier = Modifier.height(15.dp))

@@ -14,4 +14,7 @@ interface ToDoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: ToDoDb)
+
+    @Query("SELECT * FROM to_do_list WHERE id = :id")
+    suspend fun getTask(id: Int): ToDoDb
 }

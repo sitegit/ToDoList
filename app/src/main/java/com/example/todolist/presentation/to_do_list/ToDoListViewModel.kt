@@ -1,11 +1,8 @@
 package com.example.todolist.presentation.to_do_list
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todolist.data.local.model.ToDoDb
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +15,11 @@ class ToDoListViewModel @Inject constructor(
     private val repository: ToDoRepositoryImpl
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ToDoListScreenState>(ToDoListScreenState.Initial)
+    private val _state = MutableStateFlow<ListScreenState>(ListScreenState.Initial)
     val state = _state.asStateFlow()
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _state.value = ToDoListScreenState.Error(throwable.message)
+        _state.value = ListScreenState.Error(throwable.message)
         Log.i("MyTag", throwable.message.toString())
     }
 
@@ -38,7 +35,7 @@ class ToDoListViewModel @Inject constructor(
         val dayFinish = getEndOfDay(date)
         viewModelScope.launch(exceptionHandler) {
             repository.getTasksForDay(dayStart, dayFinish).collect {
-                _state.value = ToDoListScreenState.Content(toDoList = it)
+                _state.value = ListScreenState.Content(toDoList = it)
                 Log.i("MyTag", state.value.toString())
             }
         }

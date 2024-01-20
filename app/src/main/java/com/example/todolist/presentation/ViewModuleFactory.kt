@@ -1,8 +1,7 @@
-package com.example.todolist
+package com.example.todolist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.todolist.di.ApplicationScope
 import javax.inject.Inject
 import javax.inject.Provider
 

@@ -15,4 +15,6 @@ class ToDoRepositoryImpl @Inject constructor(
     override suspend fun addTask(task: ToDoDb) {
         toDoDao.insertTask(task)
     }
+
+    override suspend fun getTask(id: Int): ToDoDb = toDoDao.getTask(id)
 }
