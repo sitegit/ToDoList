@@ -1,6 +1,5 @@
-package com.example.todolist.presentation.to_do_list
+package com.example.todolist.presentation.screen.to_do_list
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +23,7 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,6 +33,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,18 +41,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.data.local.model.ToDoDb
-import java.text.SimpleDateFormat
+import com.example.todolist.getApplicationComponent
+import com.example.todolist.util.formatTimeRange
+import com.example.todolist.util.getFormattedDate
+import com.example.todolist.util.toHour
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+
+@Composable
+fun ToDoListScreen(
+    onClickedCard: (ToDoDb) -> Unit
+) {
+
+    val component = getApplicationComponent()
+    val viewModel: ToDoListViewModel = viewModel(factory = component.getViewModelFactory())
+    val screenState = viewModel.state.collectAsState(ToDoListScreenState.Initial)
+
+    when (val currentState = screenState.value) {
+        is ToDoListScreenState.Content -> {
+            ToDoListContent(
+                toDoList = currentState.toDoList,
+                onClickLoadDate = { viewModel.loadToDoList(it) },
+                onClickedCard = onClickedCard
+            )
+        }
+        is ToDoListScreenState.Error -> {}
+        ToDoListScreenState.Initial -> {}
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoListScreen(
+fun ToDoListContent(
     toDoList: List<ToDoDb>,
     onClickLoadDate: (timeMillis: Long) -> Unit,
-    onClickedCard: (Int) -> Unit
+    onClickedCard: (ToDoDb) -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
     val selectedDate = remember { mutableLongStateOf(System.currentTimeMillis()) }
@@ -84,7 +109,7 @@ fun ToDoListScreen(
 private fun ScrollContent(
     modifier: Modifier,
     toDoList: List<ToDoDb>,
-    onClickedCard: (Int) -> Unit
+    onClickedCard: (ToDoDb) -> Unit
 ) {
     val range = 0..23
 
@@ -109,18 +134,18 @@ private fun ScrollContent(
 @Composable
 fun TimeScheduledTasks(
     tasksAtThisHour: List<ToDoDb>,
-    onClickedCard: (Int) -> Unit
+    onClickedCard: (ToDoDb) -> Unit
 ) {
     if (tasksAtThisHour.isNotEmpty()) {
         tasksAtThisHour.forEach { toDoItem ->
-            val startDate = toDoItem.startDate.get(Calendar.HOUR_OF_DAY)
-            val finishDate = toDoItem.finishDate.get(Calendar.HOUR_OF_DAY)
+            val startDate = toDoItem.startDate.toHour()
+            val finishDate = toDoItem.finishDate.toHour()
             ToDoItem(
                 name = toDoItem.name,
                 startTime = startDate,
                 finishTime = finishDate
             ) {
-                onClickedCard(toDoItem.id)
+                onClickedCard(toDoItem)
             }
         }
     } else {
@@ -193,18 +218,21 @@ private fun AppBarContent(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = getFormattedDate(selectedDate.value))
         Spacer(modifier = Modifier.width(5.dp))
-        Icon(
-            modifier = Modifier
-                .padding(end = 20.dp)
-                .size(24.dp)
-                .clickable { showDialog.value = !showDialog.value },
-            imageVector = Icons.Filled.DateRange,
-            contentDescription = null
-        )
+        IconButton(
+            modifier = Modifier.padding(end = 20.dp),
+            onClick = { showDialog.value = !showDialog.value }
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = Icons.Filled.DateRange,
+                contentDescription = null
+            )
+        }
     }
 }
 
@@ -255,13 +283,4 @@ private fun DialogDatePicker(
             }
         )
     }
-}
-
-private fun getFormattedDate(timeMillis: Long): String {
-    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-    return formatter.format(Date(timeMillis))
-}
-
-fun formatTimeRange(startTime: Int, finishTime: Int): String {
-    return String.format("%02d:00 - %02d:00", startTime, finishTime)
 }

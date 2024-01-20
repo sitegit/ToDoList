@@ -1,8 +1,8 @@
 package com.example.todolist.di
 
 import androidx.lifecycle.ViewModel
-import com.example.todolist.presentation.detail.DetailViewModel
-import com.example.todolist.presentation.to_do_list.ToDoListViewModel
+import com.example.todolist.presentation.screen.detail.DetailViewModel
+import com.example.todolist.presentation.screen.to_do_list.ToDoListViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

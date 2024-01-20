@@ -1,7 +1,7 @@
 package com.example.todolist.di
 
 import android.content.Context
-import com.example.todolist.presentation.MainActivity
+import com.example.todolist.presentation.ViewModelFactory
 import dagger.BindsInstance
 import dagger.Component
 
@@ -14,7 +14,7 @@ import dagger.Component
 )
 interface ApplicationComponent {
 
-    fun inject(mainActivity: MainActivity)
+    fun getViewModelFactory(): ViewModelFactory
 
     @Component.Factory
     interface Factory {

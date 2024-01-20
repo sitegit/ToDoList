@@ -1,9 +1,13 @@
 package com.example.todolist.data.local.model
 
+import android.os.Build
+import android.os.Bundle
 import android.os.Parcelable
+import androidx.navigation.NavType
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 import java.util.Calendar
 import java.util.Date
@@ -32,15 +36,4 @@ data class ToDoDb(
                 time = Date(this@ToDoDb.dateFinish)
             }
         }
-
-    /*private fun getFormattedDate(timeInMillis: Long): String {
-        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-        return formatter.format(Date(timeInMillis))
-    }
-
-    val formattedStartDate: String
-        get() = getFormattedDate(this.dateStart)
-
-    val formattedFinishDate: String
-        get() = getFormattedDate(this.dateFinish)*/
 }
