@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun DialogDatePicker(
     selectedDate: MutableState<Long>,
-    showDialog: MutableState<Boolean>,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     onClickLoadDate: (Long) -> Unit
 ) {
@@ -27,12 +27,12 @@ fun DialogDatePicker(
 
     DatePickerDialog(
         modifier = modifier,
-        onDismissRequest = { showDialog.value = false },
+        onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(
                 onClick = {
                     selectedDate.value = datePickerState.selectedDateMillis ?: selectedDate.value
-                    showDialog.value = false
+                    onDismissRequest()
                     onClickLoadDate(selectedDate.value)
                 }
             ) {
@@ -42,7 +42,7 @@ fun DialogDatePicker(
         dismissButton = {
             TextButton(
                 onClick = {
-                    showDialog.value = false
+                    onDismissRequest()
                 }
             ) {
                 Text("Oтмена")

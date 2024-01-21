@@ -107,7 +107,10 @@ fun ToDoListContent(
     ) { paddingValues ->
         if (showDialog.value) {
             DialogDatePicker(
-                selectedDate, showDialog, Modifier.padding(paddingValues), onClickLoadDate
+                selectedDate = selectedDate,
+                onDismissRequest = { showDialog.value = false },
+                modifier = Modifier.padding(paddingValues),
+                onClickLoadDate= onClickLoadDate
             )
         }
         ScrollContent(modifier = Modifier.padding(paddingValues), toDoList = toDoList) {
@@ -174,7 +177,7 @@ fun ToDoItem(
     Card(
         modifier = Modifier
             .fillMaxWidth(0.8f)
-            .padding(top = 1.dp, bottom = 1.dp, end = 10.dp)
+            .padding(top = 3.dp, bottom = 3.dp, end = 10.dp)
             .clickable {
                 onClickedCard()
             },
@@ -185,7 +188,7 @@ fun ToDoItem(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .defaultMinSize(minHeight = 40.dp)
+                .defaultMinSize(minHeight = 50.dp)
                 .padding(vertical = 5.dp, horizontal = 10.dp)
         ) {
             Text(
