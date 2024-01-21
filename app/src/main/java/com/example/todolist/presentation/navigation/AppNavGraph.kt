@@ -1,4 +1,4 @@
-package com.example.todolist.navigation
+package com.example.todolist.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,8 +6,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.todolist.navigation.Screen.Companion.KEY_ADD_TO_DO
-import com.example.todolist.navigation.Screen.Companion.KEY_TO_DO_ITEM
+import com.example.todolist.presentation.navigation.Screen.Companion.KEY_ADD_TO_DO
+import com.example.todolist.presentation.navigation.Screen.Companion.KEY_TO_DO_ITEM
 
 @Composable
 fun AppNavGraph(

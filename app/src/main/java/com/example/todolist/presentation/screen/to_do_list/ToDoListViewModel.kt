@@ -42,18 +42,18 @@ class ToDoListViewModel @Inject constructor(
     }
 
     private fun getStartOfDay(timestamp: Long): Long {
-        val calendar = Calendar.getInstance().apply {
+        val startDay = calendar.apply {
             timeInMillis = timestamp
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        return calendar.timeInMillis
+        return startDay.timeInMillis
     }
 
     private fun getEndOfDay(timestamp: Long): Long {
-        val calendar = Calendar.getInstance().apply {
+        val finishDay = calendar.apply {
             timeInMillis = timestamp
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -62,6 +62,6 @@ class ToDoListViewModel @Inject constructor(
             add(Calendar.DAY_OF_MONTH, 1)
             add(Calendar.MILLISECOND, -1)
         }
-        return calendar.timeInMillis
+        return finishDay.timeInMillis
     }
 }

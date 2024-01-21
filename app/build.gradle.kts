@@ -70,10 +70,14 @@ dependencies {
     ksp("com.google.dagger:dagger-compiler:2.48.1")
 
     //jetpack navigation
-    implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     //Wheel picker
     implementation("com.github.IamCheng5:ComposeWheelPicker:1.1")
+
+    //Mockito
+    testImplementation("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
