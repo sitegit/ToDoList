@@ -82,6 +82,7 @@ fun DetailScreenContent(
         Text(
             text = toDoItem.name,
             fontWeight = FontWeight.Bold,
+            lineHeight = 35.sp,
             fontSize = 32.sp,
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )

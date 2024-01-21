@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,6 +46,7 @@ import com.example.todolist.presentation.util.DialogDatePicker
 import com.example.todolist.presentation.util.formatTimeRange
 import com.example.todolist.presentation.util.getFormattedDate
 import com.example.todolist.presentation.util.getFormattedTime
+import kotlin.random.Random
 
 @Composable
 fun ToDoListScreen(
@@ -142,40 +142,21 @@ private fun ScrollContent(
                 }
 
             TimeLine(index)
-            TimeScheduledTasks(
-                tasksAtThisHour = tasksAtThisHour,
-                onSelectTime = {
-                    val startTime = viewModel.getTime(it.first)
-                    val finishTime = viewModel.getTime(it.second)
-                    Pair(startTime, finishTime)
-                },
-                onClickedCard = { onClickedCard(it) }
-            )
+            if (tasksAtThisHour.isNotEmpty()) {
+                tasksAtThisHour.forEach { toDoItem ->
+                    ToDoItem(
+                        name = toDoItem.name,
+                        startTime = viewModel.getTime(toDoItem.startTime),
+                        finishTime = viewModel.getTime(toDoItem.finishTime)
+                    ) {
+                        onClickedCard(toDoItem)
+                    }
+                }
+            } else {
+                Spacer(modifier = Modifier.height(15.dp))
+            }
             if (index == range.last) TimeLine(0)
         }
-    }
-}
-
-@Composable
-fun TimeScheduledTasks(
-    tasksAtThisHour: List<ToDoEntity>,
-    onSelectTime: (Pair<Long, Long>) -> Pair<Int, Int>,
-    onClickedCard: (ToDoEntity) -> Unit
-) {
-    if (tasksAtThisHour.isNotEmpty()) {
-        tasksAtThisHour.forEach { toDoItem ->
-            val times = onSelectTime(Pair(toDoItem.startTime, toDoItem.finishTime))
-
-            ToDoItem(
-                name = toDoItem.name,
-                startTime = times.first,
-                finishTime = times.second
-            ) {
-                onClickedCard(toDoItem)
-            }
-        }
-    } else {
-        Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
@@ -186,9 +167,11 @@ fun ToDoItem(
     finishTime: Int,
     onClickedCard: () -> Unit
 ) {
+    val randomWidth = generateRandomWidth()
+
     Card(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
+            .fillMaxWidth(randomWidth)
             .padding(top = 3.dp, bottom = 3.dp, end = 10.dp)
             .clickable { onClickedCard() },
         colors = CardDefaults.cardColors(
@@ -198,7 +181,6 @@ fun ToDoItem(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .defaultMinSize(minHeight = 50.dp)
                 .padding(vertical = 5.dp, horizontal = 10.dp)
         ) {
             Text(
@@ -206,6 +188,12 @@ fun ToDoItem(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.align(Alignment.TopStart)
             )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 5.dp, end = 10.dp)
+        ) {
             Text(
                 text = formatTimeRange(startTime, finishTime),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -270,4 +258,10 @@ fun FloatButton(
     ) {
         Icon(Icons.Filled.Add, null)
     }
+}
+
+private fun generateRandomWidth(): Float {
+    val minValue = 0.5f
+    val maxValue = 0.8f
+    return Random.nextFloat() * (maxValue - minValue) + minValue
 }
