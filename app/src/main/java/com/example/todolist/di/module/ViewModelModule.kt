@@ -1,6 +1,7 @@
-package com.example.todolist.di
+package com.example.todolist.di.module
 
 import androidx.lifecycle.ViewModel
+import com.example.todolist.di.ViewModelKey
 import com.example.todolist.presentation.screen.add.AddToDoViewModel
 import com.example.todolist.presentation.screen.detail.DetailViewModel
 import com.example.todolist.presentation.screen.to_do_list.ToDoListViewModel

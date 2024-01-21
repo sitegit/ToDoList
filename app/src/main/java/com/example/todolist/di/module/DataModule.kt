@@ -1,10 +1,11 @@
-package com.example.todolist.di
+package com.example.todolist.di.module
 
 import android.content.Context
 import com.example.todolist.data.local.database.ToDoDao
 import com.example.todolist.data.local.database.ToDoDatabase
 import com.example.todolist.domain.ToDoRepository
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
+import com.example.todolist.di.ApplicationScope
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

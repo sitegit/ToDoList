@@ -1,4 +1,4 @@
-package com.example.todolist.presentation
+package com.example.todolist.presentation.util
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePicker
@@ -10,8 +10,10 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todolist.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +38,7 @@ fun DialogDatePicker(
                     onClickLoadDate(selectedDate.value)
                 }
             ) {
-                Text("Выбрать")
+                Text(stringResource(R.string.select))
             }
         },
         dismissButton = {
@@ -45,7 +47,7 @@ fun DialogDatePicker(
                     onDismissRequest()
                 }
             ) {
-                Text("Oтмена")
+                Text(stringResource(R.string.cancel))
             }
         }
     ) {
@@ -54,7 +56,7 @@ fun DialogDatePicker(
             title = {
                 Text(
                     modifier = Modifier.padding(top = 20.dp, start = 20.dp),
-                    text = "Выберите дату",
+                    text = stringResource(R.string.select_date),
                     fontSize = 20.sp
                 )
             }

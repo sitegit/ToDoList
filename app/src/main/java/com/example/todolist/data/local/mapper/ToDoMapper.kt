@@ -7,7 +7,8 @@ fun ToDoEntity.toDbModel(): ToDoDb = ToDoDb(
     name = name,
     startTime = startTime,
     finishTime = finishTime,
-    description = description
+    description = description,
+    id = id
 )
 
 fun ToDoDb.toEntity(): ToDoEntity = ToDoEntity(

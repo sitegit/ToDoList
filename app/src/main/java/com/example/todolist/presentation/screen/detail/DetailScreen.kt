@@ -22,9 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.domain.ToDoEntity
 import com.example.todolist.getApplicationComponent
-import com.example.todolist.util.formatTimeRange
-import com.example.todolist.util.getFormattedDate
-import com.example.todolist.util.toHour
+import com.example.todolist.presentation.util.formatTimeRange
+import com.example.todolist.presentation.util.getFormattedDate
 
 @Composable
 fun DetailScreen(
@@ -36,26 +35,33 @@ fun DetailScreen(
     val viewModel: DetailViewModel = viewModel(factory = component.getViewModelFactory())
     val screenState = viewModel.state.collectAsState(DetailScreenState.Initial)
 
-    viewModel.getTask(toDoItemId)
-
     when (val currentState = screenState.value) {
         is DetailScreenState.Content -> {
             val task = currentState.toDo
-            DetailScreenContent(task, onBackPressedListener)
+            DetailScreenContent(
+                toDoItem = task,
+                onSelectTime = {
+                    val startTime = viewModel.getTime(it.first)
+                    val finishTime = viewModel.getTime(it.second)
+                    Pair(startTime, finishTime)
+                },
+                onBackPressedListener = onBackPressedListener
+            )
         }
-        DetailScreenState.Initial -> {}
+        DetailScreenState.Initial -> {
+            viewModel.getTask(toDoItemId)
+        }
     }
-
 }
 
 @Composable
 fun DetailScreenContent(
     toDoItem: ToDoEntity,
+    onSelectTime: (Pair<Long, Long>) -> Pair<Int, Int>,
     onBackPressedListener: () -> Unit
 ) {
     val date = getFormattedDate(toDoItem.startTime)
-    val startTime = toDoItem.startDate.toHour()
-    val finishTime = toDoItem.finishDate.toHour()
+    val times = onSelectTime(Pair(toDoItem.startTime, toDoItem.finishTime))
 
     Column(
         modifier = Modifier
@@ -81,7 +87,7 @@ fun DetailScreenContent(
         )
         Spacer(modifier = Modifier.height(50.dp))
         Text(
-            text = "$date (${formatTimeRange(startTime, finishTime)})",
+            text = "$date (${formatTimeRange(times.first, times.second)})",
             color = MaterialTheme.colorScheme.outline,
             fontSize = 14.sp,
         )

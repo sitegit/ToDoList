@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "to_do_list")
 data class ToDoDb(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int,
     @ColumnInfo(name = "start_time") val startTime: Long,
     @ColumnInfo(name = "finish_time") val finishTime: Long,
     @ColumnInfo(name = "name") val name: String,

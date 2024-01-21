@@ -1,7 +1,10 @@
 package com.example.todolist.di
 
 import android.content.Context
-import com.example.todolist.presentation.ViewModelFactory
+import com.example.todolist.di.module.CalendarModule
+import com.example.todolist.di.module.DataModule
+import com.example.todolist.di.module.ViewModelModule
+import com.example.todolist.presentation.util.ViewModelFactory
 import dagger.BindsInstance
 import dagger.Component
 
@@ -9,7 +12,8 @@ import dagger.Component
 @Component(
     modules = [
         DataModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        CalendarModule::class
     ]
 )
 interface ApplicationComponent {

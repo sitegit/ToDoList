@@ -45,20 +45,20 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andyliu.compose_wheel_picker.VerticalWheelPicker
-import com.example.todolist.data.local.model.ToDoDb
-import com.example.todolist.domain.ToDoEntity
+import com.example.todolist.R
 import com.example.todolist.getApplicationComponent
-import com.example.todolist.presentation.DialogDatePicker
-import com.example.todolist.util.formatTimeRange
-import com.example.todolist.util.getFormattedDate
+import com.example.todolist.presentation.util.DialogDatePicker
+import com.example.todolist.presentation.util.formatTimeRange
+import com.example.todolist.presentation.util.getFormattedDate
+import com.example.todolist.presentation.util.getFormattedTime
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 @Composable
 fun AddToDoScreen(
@@ -74,26 +74,6 @@ fun AddToDoScreen(
     val showDialog = remember { mutableStateOf(false) }
     val selectedDate = rememberSaveable { mutableLongStateOf(timeMillisDay) }
     val selectedTime = remember { mutableStateOf(Pair(8, 8)) }
-
-    val calendarStart = Calendar.getInstance().apply {
-        timeInMillis = selectedDate.longValue
-        set(Calendar.HOUR_OF_DAY, selectedTime.value.first)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }
-
-    val calendarEnd = Calendar.getInstance().apply {
-        timeInMillis = selectedDate.longValue
-        set(Calendar.HOUR_OF_DAY, selectedTime.value.second)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }
-
-    val startHourTimestamp = calendarStart.timeInMillis
-    val endHourTimestamp = calendarEnd.timeInMillis
-    val hourTimestamps = Pair(startHourTimestamp, endHourTimestamp)
 
     Column(
         modifier = Modifier
@@ -112,29 +92,32 @@ fun AddToDoScreen(
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
-
             Spacer(modifier = Modifier.height(60.dp))
-            MyText("Название:") { stateTitle = it }
+            MyText(
+                stringResource(R.string.title)
+            ) {
+                stateTitle = it
+            }
             DateSelection(selectedDate.longValue, showDialog)
             TimeSelection(selectedTime)
             Spacer(modifier = Modifier.height(60.dp))
-            MyText("Описание:") { stateDescription = it }
+            MyText(
+                stringResource(R.string.description)
+            ) { stateDescription = it }
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 viewModel.addTask(
-                    ToDoEntity(
-                        name = stateTitle,
-                        startTime = hourTimestamps.first,
-                        finishTime = hourTimestamps.second,
-                        description = stateDescription
-                    )
+                    name = stateTitle,
+                    day = selectedDate.longValue,
+                    times = selectedTime.value,
+                    description = stateDescription
                 )
                 onBackPressedListener()
             }
         ) {
-           Text(text = "Добавить")
+           Text(text = stringResource(R.string.add))
         }
     }
 
@@ -164,7 +147,7 @@ fun TimeSelection(
     ){
         Text(
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            text = "Время:"
+            text = stringResource(R.string.time)
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
@@ -224,7 +207,7 @@ fun TimePickerDialog(
                         startTime = it
                     }
                     Spacer(modifier = Modifier.width(40.dp))
-                    Text("-")
+                    Text(stringResource(R.string.separator))
                     Spacer(modifier = Modifier.width(40.dp))
                     TextPicker {
                         finishTime = it
@@ -233,19 +216,19 @@ fun TimePickerDialog(
                 Row(
                     modifier = Modifier
                         .padding(bottom = 10.dp, end = 8.dp)
-                    .fillMaxWidth(),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.End) {
                     TextButton(
                         onClick = { onDismissRequest() }
                     ) {
-                        Text("Отмена")
+                        Text(stringResource(R.string.cancel))
                     }
                     TextButton(
                         onClick = {
                             onConfirmation(Pair(startTime, finishTime))
                         }
                     ) {
-                        Text("Выбрать")
+                        Text(stringResource(R.string.select))
                     }
                 }
             }
@@ -278,7 +261,7 @@ fun TextPicker(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = String.format("%02d:00", index),
+                text = getFormattedTime(index),
                 color = if (index == currentIndex)
                     MaterialTheme.colorScheme.onPrimaryContainer
                 else
@@ -303,7 +286,7 @@ fun DateSelection(
     ){
         Text(
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            text = "Дата:"
+            text = stringResource(R.string.date)
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(

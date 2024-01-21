@@ -41,14 +41,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.todolist.data.local.model.ToDoDb
 import com.example.todolist.domain.ToDoEntity
 import com.example.todolist.getApplicationComponent
-import com.example.todolist.presentation.DialogDatePicker
-import com.example.todolist.util.formatTimeRange
-import com.example.todolist.util.getFormattedDate
-import com.example.todolist.util.toHour
-import java.util.Calendar
+import com.example.todolist.presentation.util.DialogDatePicker
+import com.example.todolist.presentation.util.formatTimeRange
+import com.example.todolist.presentation.util.getFormattedDate
+import com.example.todolist.presentation.util.getFormattedTime
 
 @Composable
 fun ToDoListScreen(
@@ -63,12 +61,14 @@ fun ToDoListScreen(
     when (val currentState = screenState.value) {
         is ToDoListScreenState.Content -> {
             ToDoListContent(
+                viewModel = viewModel,
                 toDoList = currentState.toDoList,
                 onClickLoadDate = { viewModel.loadToDoList(it) },
                 onClickedCard = onClickedCard,
                 onClickAddToDoButton = onClickAddToDoButton
             )
         }
+
         ToDoListScreenState.Initial -> {}
     }
 }
@@ -76,6 +76,7 @@ fun ToDoListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToDoListContent(
+    viewModel: ToDoListViewModel,
     toDoList: List<ToDoEntity>,
     onClickLoadDate: (timeMillis: Long) -> Unit,
     onClickedCard: (ToDoEntity) -> Unit,
@@ -105,10 +106,14 @@ fun ToDoListContent(
                 selectedDate = selectedDate,
                 onDismissRequest = { showDialog.value = false },
                 modifier = Modifier.padding(paddingValues),
-                onClickLoadDate= onClickLoadDate
+                onClickLoadDate = onClickLoadDate
             )
         }
-        ScrollContent(modifier = Modifier.padding(paddingValues), toDoList = toDoList) {
+        ScrollContent(
+            viewModel = viewModel,
+            modifier = Modifier.padding(paddingValues),
+            toDoList = toDoList
+        ) {
             onClickedCard(it)
         }
     }
@@ -116,6 +121,7 @@ fun ToDoListContent(
 
 @Composable
 private fun ScrollContent(
+    viewModel: ToDoListViewModel,
     modifier: Modifier,
     toDoList: List<ToDoEntity>,
     onClickedCard: (ToDoEntity) -> Unit
@@ -131,10 +137,20 @@ private fun ScrollContent(
     ) {
         items(range.count()) { index ->
             val tasksAtThisHour = toDoList
-                .filter { it.startDate.get(Calendar.HOUR_OF_DAY) == index }
+                .filter {
+                    viewModel.getTime(it.startTime) == index
+                }
 
             TimeLine(index)
-            TimeScheduledTasks(tasksAtThisHour) { onClickedCard(it) }
+            TimeScheduledTasks(
+                tasksAtThisHour = tasksAtThisHour,
+                onSelectTime = {
+                    val startTime = viewModel.getTime(it.first)
+                    val finishTime = viewModel.getTime(it.second)
+                    Pair(startTime, finishTime)
+                },
+                onClickedCard = { onClickedCard(it) }
+            )
             if (index == range.last) TimeLine(0)
         }
     }
@@ -143,16 +159,17 @@ private fun ScrollContent(
 @Composable
 fun TimeScheduledTasks(
     tasksAtThisHour: List<ToDoEntity>,
+    onSelectTime: (Pair<Long, Long>) -> Pair<Int, Int>,
     onClickedCard: (ToDoEntity) -> Unit
 ) {
     if (tasksAtThisHour.isNotEmpty()) {
         tasksAtThisHour.forEach { toDoItem ->
-            val startDate = toDoItem.startDate.toHour()
-            val finishDate = toDoItem.finishDate.toHour()
+            val times = onSelectTime(Pair(toDoItem.startTime, toDoItem.finishTime))
+
             ToDoItem(
                 name = toDoItem.name,
-                startTime = startDate,
-                finishTime = finishDate
+                startTime = times.first,
+                finishTime = times.second
             ) {
                 onClickedCard(toDoItem)
             }
@@ -162,7 +179,7 @@ fun TimeScheduledTasks(
     }
 }
 
-@Composable 
+@Composable
 fun ToDoItem(
     name: String,
     startTime: Int,
@@ -173,9 +190,7 @@ fun ToDoItem(
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .padding(top = 3.dp, bottom = 3.dp, end = 10.dp)
-            .clickable {
-                onClickedCard()
-            },
+            .clickable { onClickedCard() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
@@ -206,7 +221,7 @@ fun TimeLine(
     time: Int
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        val hour = String.format("%02d:00", time)
+        val hour = getFormattedTime(time)
         Text(
             modifier = Modifier.width(45.dp),
             text = hour,
@@ -225,8 +240,7 @@ private fun AppBarContent(
     showDialog: MutableState<Boolean>
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

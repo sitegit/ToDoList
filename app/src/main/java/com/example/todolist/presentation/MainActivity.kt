@@ -10,7 +10,6 @@ import com.example.todolist.presentation.screen.add.AddToDoScreen
 import com.example.todolist.presentation.screen.detail.DetailScreen
 import com.example.todolist.presentation.screen.to_do_list.ToDoListScreen
 import com.example.todolist.presentation.ui.theme.ToDoListTheme
-import java.util.Calendar
 
 class MainActivity : ComponentActivity() {
 
