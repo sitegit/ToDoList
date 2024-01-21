@@ -1,6 +1,6 @@
 package com.example.todolist.navigation
 
-import com.example.todolist.data.local.model.ToDoDb
+import com.example.todolist.domain.ToDoEntity
 
 sealed class Screen(
     val route: String
@@ -11,7 +11,7 @@ sealed class Screen(
     data object Detail : Screen(ROUTE_DETAIL) {
         private const val ROUTE_FOR_ARGS = "detail"
 
-        fun getRouteWithArgs(toDoItem: ToDoDb): String {
+        fun getRouteWithArgs(toDoItem: ToDoEntity): String {
             return "$ROUTE_FOR_ARGS/${toDoItem.id}"
         }
     }

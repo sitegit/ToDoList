@@ -3,8 +3,7 @@ package com.example.todolist.presentation.screen.to_do_list
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todolist.data.local.repository.ToDoRepositoryImpl
-import kotlinx.coroutines.CoroutineExceptionHandler
+import com.example.todolist.domain.usecase.GetToDoListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -12,29 +11,22 @@ import java.util.Calendar
 import javax.inject.Inject
 
 class ToDoListViewModel @Inject constructor(
-    private val repository: ToDoRepositoryImpl
+    private val getToDoListUseCase: GetToDoListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ToDoListScreenState>(ToDoListScreenState.Initial)
     val state = _state.asStateFlow()
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        _state.value = ToDoListScreenState.Error(throwable.message)
-        Log.i("MyTag", throwable.message.toString())
-    }
-
     init {
         val currentDate = System.currentTimeMillis()
-
         loadToDoList(currentDate)
     }
 
     fun loadToDoList(date: Long) {
-        //_state.value = ToDoListScreenState.Loading
         val dayStart = getStartOfDay(date)
         val dayFinish = getEndOfDay(date)
-        viewModelScope.launch(exceptionHandler) {
-            repository.getTasksForDay(dayStart, dayFinish).collect {
+        viewModelScope.launch {
+            getToDoListUseCase(dayStart, dayFinish).collect {
                 _state.value = ToDoListScreenState.Content(toDoList = it)
                 Log.i("MyTag", state.value.toString())
             }

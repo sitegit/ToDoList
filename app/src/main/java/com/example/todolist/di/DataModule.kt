@@ -3,7 +3,7 @@ package com.example.todolist.di
 import android.content.Context
 import com.example.todolist.data.local.database.ToDoDao
 import com.example.todolist.data.local.database.ToDoDatabase
-import com.example.todolist.data.local.repository.ToDoRepository
+import com.example.todolist.domain.ToDoRepository
 import com.example.todolist.data.local.repository.ToDoRepositoryImpl
 import dagger.Binds
 import dagger.Module

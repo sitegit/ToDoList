@@ -19,21 +19,16 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -47,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todolist.data.local.model.ToDoDb
+import com.example.todolist.domain.ToDoEntity
 import com.example.todolist.getApplicationComponent
 import com.example.todolist.presentation.DialogDatePicker
 import com.example.todolist.util.formatTimeRange
@@ -56,7 +52,7 @@ import java.util.Calendar
 
 @Composable
 fun ToDoListScreen(
-    onClickedCard: (ToDoDb) -> Unit,
+    onClickedCard: (ToDoEntity) -> Unit,
     onClickAddToDoButton: (Long) -> Unit
 ) {
 
@@ -73,7 +69,6 @@ fun ToDoListScreen(
                 onClickAddToDoButton = onClickAddToDoButton
             )
         }
-        is ToDoListScreenState.Error -> {}
         ToDoListScreenState.Initial -> {}
     }
 }
@@ -81,9 +76,9 @@ fun ToDoListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToDoListContent(
-    toDoList: List<ToDoDb>,
+    toDoList: List<ToDoEntity>,
     onClickLoadDate: (timeMillis: Long) -> Unit,
-    onClickedCard: (ToDoDb) -> Unit,
+    onClickedCard: (ToDoEntity) -> Unit,
     onClickAddToDoButton: (timeMillis: Long) -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -122,8 +117,8 @@ fun ToDoListContent(
 @Composable
 private fun ScrollContent(
     modifier: Modifier,
-    toDoList: List<ToDoDb>,
-    onClickedCard: (ToDoDb) -> Unit
+    toDoList: List<ToDoEntity>,
+    onClickedCard: (ToDoEntity) -> Unit
 ) {
     val range = 0..23
 
@@ -147,8 +142,8 @@ private fun ScrollContent(
 
 @Composable
 fun TimeScheduledTasks(
-    tasksAtThisHour: List<ToDoDb>,
-    onClickedCard: (ToDoDb) -> Unit
+    tasksAtThisHour: List<ToDoEntity>,
+    onClickedCard: (ToDoEntity) -> Unit
 ) {
     if (tasksAtThisHour.isNotEmpty()) {
         tasksAtThisHour.forEach { toDoItem ->

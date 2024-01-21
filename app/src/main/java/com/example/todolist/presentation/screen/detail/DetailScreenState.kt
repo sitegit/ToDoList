@@ -1,11 +1,10 @@
 package com.example.todolist.presentation.screen.detail
 
-import com.example.todolist.data.local.model.ToDoDb
-
+import com.example.todolist.domain.ToDoEntity
 
 sealed class DetailScreenState {
 
     data object Initial : DetailScreenState()
 
-    data class Content(val toDo: ToDoDb) : DetailScreenState()
+    data class Content(val toDo: ToDoEntity) : DetailScreenState()
 }

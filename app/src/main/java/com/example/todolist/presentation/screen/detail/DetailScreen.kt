@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.todolist.data.local.model.ToDoDb
+import com.example.todolist.domain.ToDoEntity
 import com.example.todolist.getApplicationComponent
 import com.example.todolist.util.formatTimeRange
 import com.example.todolist.util.getFormattedDate
@@ -50,10 +50,10 @@ fun DetailScreen(
 
 @Composable
 fun DetailScreenContent(
-    toDoItem: ToDoDb,
+    toDoItem: ToDoEntity,
     onBackPressedListener: () -> Unit
 ) {
-    val date = getFormattedDate(toDoItem.dateStart)
+    val date = getFormattedDate(toDoItem.startTime)
     val startTime = toDoItem.startDate.toHour()
     val finishTime = toDoItem.finishDate.toHour()
 

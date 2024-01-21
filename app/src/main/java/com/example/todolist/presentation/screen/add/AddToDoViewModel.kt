@@ -2,18 +2,18 @@ package com.example.todolist.presentation.screen.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todolist.data.local.model.ToDoDb
-import com.example.todolist.data.local.repository.ToDoRepositoryImpl
+import com.example.todolist.domain.ToDoEntity
+import com.example.todolist.domain.usecase.AddToDoUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AddToDoViewModel @Inject constructor(
-    private val repository: ToDoRepositoryImpl
+    private val addToDoUseCase: AddToDoUseCase
 ) : ViewModel() {
 
-    fun addTask(toDoItem: ToDoDb) {
+    fun addTask(toDoItem: ToDoEntity) {
         viewModelScope.launch {
-            repository.addTask(toDoItem)
+            addToDoUseCase(toDoItem)
         }
     }
 }

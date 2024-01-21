@@ -52,13 +52,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andyliu.compose_wheel_picker.VerticalWheelPicker
 import com.example.todolist.data.local.model.ToDoDb
+import com.example.todolist.domain.ToDoEntity
 import com.example.todolist.getApplicationComponent
 import com.example.todolist.presentation.DialogDatePicker
 import com.example.todolist.util.formatTimeRange
 import com.example.todolist.util.getFormattedDate
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.Calendar
 
 @Composable
@@ -125,10 +124,10 @@ fun AddToDoScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 viewModel.addTask(
-                    ToDoDb(
+                    ToDoEntity(
                         name = stateTitle,
-                        dateStart = hourTimestamps.first,
-                        dateFinish = hourTimestamps.second,
+                        startTime = hourTimestamps.first,
+                        finishTime = hourTimestamps.second,
                         description = stateDescription
                     )
                 )
