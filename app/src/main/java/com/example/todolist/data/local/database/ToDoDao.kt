@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ToDoDao {
     @Query("SELECT * FROM to_do_list WHERE start_time >= :dayStart AND finish_time <= :dayEnd")
-    fun getTasksForDay(dayStart: Long, dayEnd: Long): Flow<List<ToDoDb>>
+    suspend fun getTasksForDay(dayStart: Long, dayEnd: Long): List<ToDoDb>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: ToDoDb)

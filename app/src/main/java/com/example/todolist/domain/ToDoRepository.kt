@@ -1,10 +1,9 @@
 package com.example.todolist.domain
 
-import kotlinx.coroutines.flow.Flow
 
 interface ToDoRepository {
 
-    fun getTasksForDay(dayStart: Long, dayEnd: Long): Flow<List<ToDoEntity>>
+    suspend fun getTasksForDay(dayStart: Long, dayEnd: Long): List<ToDoEntity>
 
     suspend fun addTask(task: ToDoEntity)
 

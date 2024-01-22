@@ -24,7 +24,7 @@ fun DialogDatePicker(
     onClickLoadDate: (Long) -> Unit
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = null,
+        initialSelectedDateMillis = selectedDate,
     )
 
     DatePickerDialog(
@@ -34,7 +34,6 @@ fun DialogDatePicker(
             TextButton(
                 onClick = {
                     onClickLoadDate(datePickerState.selectedDateMillis ?: selectedDate)
-                    Log.i("GetToDoListUseCase", "selectedDate.value $selectedDate")
                     onDismissRequest()
                 }
             ) {

@@ -1,11 +1,9 @@
 package com.example.todolist.presentation.screen.to_do_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.domain.usecase.GetToDoListUseCase
 import com.example.todolist.presentation.util.toHour
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,13 +20,13 @@ class ToDoListViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun loadToDoList(date: Long) {
+        _state.value = ToDoListScreenState.Loading
+        val dayStart = getStartOfDay(date)
+        val dayFinish = getEndOfDay(date)
         viewModelScope.launch {
-            val dayStart = getStartOfDay(date)
-            val dayFinish = getEndOfDay(date)
-            getToDoListUseCase(dayStart, dayFinish).collect {
-                _state.value = ToDoListScreenState.Content(toDoList = it)
-                //Log.i("MyTag", _state.value.toString())
-            }
+            _state.value = ToDoListScreenState.Content(
+                toDoList = getToDoListUseCase(dayStart, dayFinish)
+            )
         }
     }
 
