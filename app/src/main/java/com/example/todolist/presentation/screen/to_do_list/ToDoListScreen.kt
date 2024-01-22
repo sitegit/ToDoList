@@ -1,5 +1,6 @@
 package com.example.todolist.presentation.screen.to_do_list
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,23 +54,33 @@ fun ToDoListScreen(
     onClickedCard: (ToDoEntity) -> Unit,
     onClickAddToDoButton: (Long) -> Unit
 ) {
-
     val component = getApplicationComponent()
     val viewModel: ToDoListViewModel = viewModel(factory = component.getViewModelFactory())
     val screenState = viewModel.state.collectAsState(ToDoListScreenState.Initial)
+
+    val selectedDate = rememberSaveable { mutableLongStateOf(System.currentTimeMillis()) }
 
     when (val currentState = screenState.value) {
         is ToDoListScreenState.Content -> {
             ToDoListContent(
                 viewModel = viewModel,
                 toDoList = currentState.toDoList,
-                onClickLoadDate = { viewModel.loadToDoList(it) },
+                timeMillisDay = selectedDate.longValue,
+                onClickLoadDate = {
+                    selectedDate.longValue = it
+                    Log.i("GetToDoListUseCase", "ToDoListContent ${selectedDate.longValue}")
+                    viewModel.loadToDoList(selectedDate.longValue)
+                },
                 onClickedCard = onClickedCard,
                 onClickAddToDoButton = onClickAddToDoButton
             )
         }
 
-        ToDoListScreenState.Initial -> {}
+        ToDoListScreenState.Initial -> {
+            viewModel.loadToDoList(selectedDate.longValue)
+        }
+        is ToDoListScreenState.Error -> {
+        }
     }
 }
 
@@ -78,12 +89,12 @@ fun ToDoListScreen(
 fun ToDoListContent(
     viewModel: ToDoListViewModel,
     toDoList: List<ToDoEntity>,
+    timeMillisDay: Long,
     onClickLoadDate: (timeMillis: Long) -> Unit,
     onClickedCard: (ToDoEntity) -> Unit,
     onClickAddToDoButton: (timeMillis: Long) -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    val selectedDate = rememberSaveable { mutableLongStateOf(System.currentTimeMillis()) }
 
     Scaffold(
         topBar = {
@@ -93,17 +104,17 @@ fun ToDoListContent(
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
                 title = {
-                    AppBarContent(selectedDate, showDialog)
+                    AppBarContent(timeMillisDay, showDialog)
                 }
             )
         },
         floatingActionButton = {
-            FloatButton { onClickAddToDoButton(selectedDate.longValue) }
+            FloatButton { onClickAddToDoButton(timeMillisDay) }
         }
     ) { paddingValues ->
         if (showDialog.value) {
             DialogDatePicker(
-                selectedDate = selectedDate,
+                selectedDate = timeMillisDay,
                 onDismissRequest = { showDialog.value = false },
                 modifier = Modifier.padding(paddingValues),
                 onClickLoadDate = onClickLoadDate
@@ -224,7 +235,7 @@ fun TimeLine(
 
 @Composable
 private fun AppBarContent(
-    selectedDate: MutableState<Long>,
+    selectedDate: Long,
     showDialog: MutableState<Boolean>
 ) {
     Row(
@@ -232,7 +243,7 @@ private fun AppBarContent(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = getFormattedDate(selectedDate.value))
+        Text(text = getFormattedDate(selectedDate))
         Spacer(modifier = Modifier.width(5.dp))
         IconButton(
             modifier = Modifier.padding(end = 20.dp),
