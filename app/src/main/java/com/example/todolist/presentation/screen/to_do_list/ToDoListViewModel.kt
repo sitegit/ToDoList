@@ -19,18 +19,14 @@ class ToDoListViewModel @Inject constructor(
     private val _state = MutableStateFlow<ToDoListScreenState>(ToDoListScreenState.Initial)
     val state = _state.asStateFlow()
 
-    init {
-        val currentDate = System.currentTimeMillis()
-        loadToDoList(currentDate)
-    }
-
     fun loadToDoList(date: Long) {
+        _state.value = ToDoListScreenState.Loading
         val dayStart = getStartOfDay(date)
         val dayFinish = getEndOfDay(date)
         viewModelScope.launch {
-            getToDoListUseCase(dayStart, dayFinish).collect {
-                _state.value = ToDoListScreenState.Content(toDoList = it)
-            }
+            _state.value = ToDoListScreenState.Content(
+                toDoList = getToDoListUseCase(dayStart, dayFinish)
+            )
         }
     }
 

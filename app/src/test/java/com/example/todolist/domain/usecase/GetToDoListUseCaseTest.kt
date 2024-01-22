@@ -43,13 +43,13 @@ class GetToDoListUseCaseTest {
             )
         )
 
-        whenever(repository.getTasksForDay(dayStart, dayEnd)).thenReturn(flowOf(expectedToDoList))
+        whenever(repository.getTasksForDay(dayStart, dayEnd)).thenReturn(expectedToDoList)
 
         // Act
-        val result: Flow<List<ToDoEntity>> = getToDoListUseCase(dayStart, dayEnd)
+        val result: List<ToDoEntity> = getToDoListUseCase(dayStart, dayEnd)
 
         // Assert
-        val resultList = result.toList().flatten()
+        val resultList = result.toList()
         assertEquals(expectedToDoList.size, resultList.size)
         assertEquals(expectedToDoList, resultList)
     }

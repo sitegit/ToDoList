@@ -38,7 +38,6 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -72,7 +71,7 @@ fun AddToDoScreen(
     var stateDescription by remember { mutableStateOf("") }
 
     val showDialog = remember { mutableStateOf(false) }
-    val selectedDate = rememberSaveable { mutableLongStateOf(timeMillisDay) }
+    val selectedDate = remember { mutableLongStateOf(timeMillisDay) }
     val selectedTime = remember { mutableStateOf(Pair(8, 8)) }
 
     Column(
@@ -123,8 +122,8 @@ fun AddToDoScreen(
 
     if (showDialog.value) {
         DialogDatePicker(
-            selectedDate = selectedDate,
             onDismissRequest = { showDialog.value = false },
+            selectedDate = selectedDate.longValue,
             onClickLoadDate = {
                 selectedDate.longValue = it
             }

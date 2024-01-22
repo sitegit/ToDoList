@@ -6,5 +6,7 @@ sealed class ToDoListScreenState {
 
     data object Initial : ToDoListScreenState()
 
+    data object Loading : ToDoListScreenState()
+
     data class Content(val toDoList: List<ToDoEntity>) : ToDoListScreenState()
 }
