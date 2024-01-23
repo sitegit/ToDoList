@@ -20,11 +20,11 @@
 <p align="center">
   <table align="center" cellspacing="10">
     <tr>
-      <td>Экран со списком задач</td>
-      <td>Экран со списком задач</td>
-      <td>Экран с детальной информацией</td>
-      <td>Экран добавления задачи</td>
-      <td>Экран добавления задачи</td>
+      <td style="width: 200px;>Экран со списком задач</td>
+      <td style="width: 200px;>Экран со списком задач</td>
+      <td style="width: 200px;>Экран с детальной информацией</td>
+      <td style="width: 200px;>Экран добавления задачи</td>
+      <td style="width: 200px;>Экран добавления задачи</td>
     </tr>
   </table>
   <table align="center" cellspacing="10">
