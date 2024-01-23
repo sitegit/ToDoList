@@ -17,14 +17,19 @@
 - Unit-тесты
 
 ## Скриншоты
+<style>
+  .cell {
+    width: 200px; /* Задайте предпочтительную ширину */
+  }
+</style>
 <p align="center">
   <table align="center" cellspacing="10">
     <tr>
-      <td style="width: 200px;">Экран со списком задач</td>
-      <td style="width: 200px;">Экран со списком задач</td>
-      <td style="width: 200px;">Экран с детальной информацией</td>
-      <td style="width: 200px;">Экран добавления задачи</td>
-      <td style="width: 200px;">Экран добавления задачи</td>
+      <td class="cell">Экран со списком задач</td>
+      <td class="cell">Экран со списком задач</td>
+      <td class="cell">Экран с детальной информацией</td>
+      <td class="cell">Экран добавления задачи</td>
+      <td class="cell">Экран добавления задачи</td>
     </tr>
   </table>
   <table align="center" cellspacing="10">
