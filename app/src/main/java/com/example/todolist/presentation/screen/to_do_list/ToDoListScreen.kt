@@ -52,6 +52,7 @@ import kotlin.random.Random
 
 @Composable
 fun ToDoListScreen(
+    timeMillisDay: Long,
     onClickedCard: (ToDoEntity) -> Unit,
     onClickAddToDoButton: (Long) -> Unit
 ) {
@@ -59,7 +60,7 @@ fun ToDoListScreen(
     val viewModel: ToDoListViewModel = viewModel(factory = component.getViewModelFactory())
     val screenState = viewModel.state.collectAsState(ToDoListScreenState.Initial)
 
-    val selectedDate = rememberSaveable { mutableLongStateOf(System.currentTimeMillis()) }
+    val selectedDate = rememberSaveable { mutableLongStateOf(timeMillisDay) }
 
     when (val currentState = screenState.value) {
         is ToDoListScreenState.Content -> {
