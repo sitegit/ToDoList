@@ -39,8 +39,8 @@ class MainActivity : ComponentActivity() {
                         DetailScreen(it) { navHostController.popBackStack() }
                     },
                     addScreenContent = {
-                        AddToDoScreen(it) {
-                            navHostController.navigate(Screen.ToDoList.getRouteWithArgs(it))
+                        AddToDoScreen(it) { selectedDate ->
+                            navHostController.navigate(Screen.ToDoList.getRouteWithArgs(selectedDate))
                         }
                     }
                 )

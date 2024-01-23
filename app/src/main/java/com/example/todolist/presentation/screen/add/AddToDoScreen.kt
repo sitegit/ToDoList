@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddToDoScreen(
     timeMillisDay: Long,
-    onBackPressedListener: () -> Unit
+    onBackPressed: (Long) -> Unit
 ) {
     val component = getApplicationComponent()
     val viewModel: AddToDoViewModel = viewModel(factory = component.getViewModelFactory())
@@ -83,7 +83,7 @@ fun AddToDoScreen(
     ) {
         Column {
             IconButton(
-                onClick = { onBackPressedListener() }
+                onClick = { onBackPressed(selectedDate.longValue) }
             ) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
@@ -113,7 +113,7 @@ fun AddToDoScreen(
                     times = selectedTime.value,
                     description = stateDescription
                 )
-                onBackPressedListener()
+                onBackPressed(selectedDate.longValue)
             }
         ) {
            Text(text = stringResource(R.string.add))
