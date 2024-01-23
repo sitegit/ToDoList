@@ -26,8 +26,6 @@
       <td style="width: 200px;>Экран добавления задачи</td>
       <td style="width: 200px;>Экран добавления задачи</td>
     </tr>
-  </table>
-  <table align="center" cellspacing="10">
     <tr>
       <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/dd0342f0-61c4-47ff-923c-87db2a3ddacc" width="200" alt="Screenshot1"/></td>
       <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/d2ee867f-480d-408e-974a-e41c3abfd371" width="200" alt="Screenshot3"/></td>
