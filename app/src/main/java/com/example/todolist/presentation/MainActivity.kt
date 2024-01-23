@@ -16,14 +16,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val currentTimeMillis = System.currentTimeMillis()
+
         setContent {
             ToDoListTheme {
                 val navHostController = rememberNavController()
 
                 AppNavGraph(
                     navHostController = navHostController,
-                    toDoListScreenContent = {
+                    toDoListScreenContent = { timeMillis ->
                         ToDoListScreen(
+                            timeMillisDay = if (timeMillis == 0L) currentTimeMillis else timeMillis,
                             onClickedCard = {
                                 navHostController.navigate(Screen.Detail.getRouteWithArgs(it))
                             },
@@ -36,7 +39,9 @@ class MainActivity : ComponentActivity() {
                         DetailScreen(it) { navHostController.popBackStack() }
                     },
                     addScreenContent = {
-                        AddToDoScreen(it) { navHostController.popBackStack() }
+                        AddToDoScreen(it) {
+                            navHostController.navigate(Screen.ToDoList.getRouteWithArgs(it))
+                        }
                     }
                 )
             }
