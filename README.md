@@ -49,7 +49,7 @@
   </table>
   <table align="center" cellspacing="10">
     <tr>
-      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/68bdd869-770b-4679-8e52-621b6bfda20a" width="200" alt="Screenshot1"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/68bdd869-770b-4679-8e52-621b6bfda20a" width="200" height="500" alt="Screenshot1"/></td>
       <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/518c27ef-c0d1-4a88-81ec-04a24b90617d" width="200" alt="Screenshot2"/></td>
       <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/685e5609-39b3-4bb8-ba0f-3ae0b9dfb534" width="200" alt="Screenshot4"/></td>
       <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/18c6f335-bb08-4d7f-bd3c-3533663f7fe8" width="200" alt="Screenshot3"/></td>
