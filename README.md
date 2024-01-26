@@ -17,52 +17,8 @@
 - Unit-тесты
 
 ## Скриншоты
-<p align="center">
-  <table align="center" cellspacing="10">
-    <tr>
-      <td width="200">
-        Главный экран со списком задач
-      </td>
-      <td width="200">
-        Главный экран со списком задач
-      </td>
-      <td width="200">
-        Экран с детальной информацией
-      </td width="200">
-      <td>
-        Экран добавления задач
-      </td>
-      <td width="200">
-        Экран добавления задач
-      </td>
-    </tr>
-  </table>
-  <table align="center" cellspacing="10">
-    <tr>
-      <td>
-        <img src="https://github.com/sitegit/ToDoList/assets/47815702/dd0342f0-61c4-47ff-923c-87db2a3ddacc" width="200" alt="Screenshot1"/>
-      </td>
-      <td>
-        <img src="https://github.com/sitegit/ToDoList/assets/47815702/d2ee867f-480d-408e-974a-e41c3abfd371" width="200" alt="Screenshot3"/>
-      </td>
-      <td>
-        <img src="https://github.com/sitegit/ToDoList/assets/47815702/c7b54698-f4c7-4e53-8b21-539fed555ced" width="200" alt="Screenshot2"/>
-      </td>
-      <td>
-        <img src="https://github.com/sitegit/ToDoList/assets/47815702/c75ba4b9-1444-41ff-ac44-2e283d90e82f" width="200" alt="Screenshot4"/>
-      </td>
-      <td>
-        <img src="https://github.com/sitegit/ToDoList/assets/47815702/61dd5a58-80ec-4f12-85cc-e23944d55c78" width="200" alt="Screenshot5"/>
-      </td>
-    </tr>
-  </table>
-  <table align="center" cellspacing="10">
-    <tr>
-      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/68bdd869-770b-4679-8e52-621b6bfda20a" width="200" alt="Screenshot1"/></td>
-      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/518c27ef-c0d1-4a88-81ec-04a24b90617d" width="200" alt="Screenshot2"/></td>
-      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/685e5609-39b3-4bb8-ba0f-3ae0b9dfb534" width="200" alt="Screenshot4"/></td>
-      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/18c6f335-bb08-4d7f-bd3c-3533663f7fe8" width="200" alt="Screenshot3"/></td>
-      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/7744dd84-6cfa-440c-973c-3e1383192456" width="200" alt="Screenshot5"/></td>
-    </tr>
-  </table>
+| Главный экран со списком задач | Главный экран со списком задач | Экран с детальной информацией | Экран добавления задач | Экран добавления задач |
+|:-----------:|:---------:|:---------:|:---------:|:---------:|
+| <img src="https://github.com/sitegit/GitTest/assets/47815702/b2ba10ac-6873-4411-8032-d5c3a3cce8bf" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/f17c952e-3a32-46d0-94f5-b3dae54631e1" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/afb19ad5-66a6-4a17-8afc-84f285cd303b" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/0d562b92-ed70-4f95-aaa1-e5427dcc04b2" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/ccde1bb4-0737-4bf0-a5d5-1d070e6822bc" width="150"> |
+| <img src="https://github.com/sitegit/GitTest/assets/47815702/07edf22b-6190-4841-b7ce-b6acde4411bb" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/091cc0b4-1006-4780-ac45-122f78d3f16f" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/5181d0ad-f18a-49ea-802b-f64259c1979f" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/eb56e9bb-fa82-44dc-8768-69433e5568d9" width="150"> | <img src="https://github.com/sitegit/GitTest/assets/47815702/b4866123-5abb-4b87-afdf-d6a53b6aafc4" width="150"> |
 
