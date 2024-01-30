@@ -27,18 +27,24 @@
       <td width="20%">Экран добавления задач</td>
     </tr>
     <tr>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/6daa765c-9690-48ff-800e-cc914432e374"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/5564489d-d21b-4612-b7d6-10f8fdf9526d"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/7f8e21e7-fb41-428e-814f-18053cc56195"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/5871d548-82e4-4c35-a1fa-7b0101405447"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/5f79ea05-7bed-464c-b2b0-f3b722f11674"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/c3520849-3ee4-468f-b6ce-a33b4cbe3a57"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/f0ecadb4-286a-452b-a1f7-f8826ac2f0aa"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/2245400e-a881-4627-8f26-2a1959d8b03d"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/59121d6d-7f0d-4b70-9434-8c569565f5fb"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/97ae554b-7f96-4c30-80d2-010d6ced49e2"/></td>
     </tr>
     <tr>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/b1a69ab3-b966-4209-b0f5-794bff4c96f1"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/952ff5b9-2f2e-4945-9fdb-6b2f6f645a01"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/a8d087f9-aba2-4578-96d6-7173865bbb38"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/91130386-a321-44ef-b63e-aa494cdfc710"/></td>
-      <td><img src="https://github.com/sitegit/GitTest/assets/47815702/9dbd1f9e-6a81-4de5-87f4-6eb22f6859b9"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/3ca858a9-66e7-4f6e-b98a-650261e5285f"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/cfd223ad-9def-41ca-9ce9-c5614e3a3163"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/93f12ad8-7fcf-439f-bcce-5356deaff7f2"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/db3b6c56-e78e-4738-8d4f-d7eb55e87f34"/></td>
+      <td><img src="https://github.com/sitegit/ToDoList/assets/47815702/48bd4cfe-df19-4f84-b6ee-fa42bb495ad8"/></td>
     </tr>
   </table>
 </p>
+
+![photo_5291796826099405890_y](https://github.com/sitegit/ToDoList/assets/47815702/3ca858a9-66e7-4f6e-b98a-650261e5285f)
+![photo_5291796826099405886_y](https://github.com/sitegit/ToDoList/assets/47815702/cfd223ad-9def-41ca-9ce9-c5614e3a3163)
+![photo_5291796826099405888_y](https://github.com/sitegit/ToDoList/assets/47815702/93f12ad8-7fcf-439f-bcce-5356deaff7f2)
+![photo_5291796826099405889_y](https://github.com/sitegit/ToDoList/assets/47815702/db3b6c56-e78e-4738-8d4f-d7eb55e87f34)
+![photo_5291796826099405887_y](https://github.com/sitegit/ToDoList/assets/47815702/48bd4cfe-df19-4f84-b6ee-fa42bb495ad8)
