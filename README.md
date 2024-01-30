@@ -43,8 +43,3 @@
   </table>
 </p>
 
-![photo_5291796826099405890_y](https://github.com/sitegit/ToDoList/assets/47815702/3ca858a9-66e7-4f6e-b98a-650261e5285f)
-![photo_5291796826099405886_y](https://github.com/sitegit/ToDoList/assets/47815702/cfd223ad-9def-41ca-9ce9-c5614e3a3163)
-![photo_5291796826099405888_y](https://github.com/sitegit/ToDoList/assets/47815702/93f12ad8-7fcf-439f-bcce-5356deaff7f2)
-![photo_5291796826099405889_y](https://github.com/sitegit/ToDoList/assets/47815702/db3b6c56-e78e-4738-8d4f-d7eb55e87f34)
-![photo_5291796826099405887_y](https://github.com/sitegit/ToDoList/assets/47815702/48bd4cfe-df19-4f84-b6ee-fa42bb495ad8)
